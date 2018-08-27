@@ -72,15 +72,15 @@ The expected **Top-1** **accuracy** of the model for NTU-RGD+D are shown here:
 #### Figures
 - Loss & accuracy 
 <div align="center">
-    <img src="resource/info/Loss.png" width="400" height="400">
-    <img src="resource/info/Accuracy.png"width="400" height="400">
+    <img src="resource/info/Loss.png" width="500" height="400">
+    <img src="resource/info/Accuracy.png"width="500" height="400">
 </div>
 
 #### Confusion matrix
 
 <div align="center">
-    <img src="resource/info/ConfMatrix_train.png" width="400" height="400">
-    <img src="resource/info/ConfMatrix_test.png" width="400" height="400">
+    <img src="resource/info/ConfMatrix_train.png" width="500" height="400">
+    <img src="resource/info/ConfMatrix_test.png" width="500" height="400">
 </div>
 
 
