@@ -71,16 +71,17 @@ The expected **Top-1** **accuracy** of the model for NTU-RGD+D are shown here:
 
 #### Figures
 - Loss & accuracy 
-<figure class="half">
-    <img src="resource/info/Loss.png">
-    <img src="resource/info/Accuracy.png">
-</figure>
+<center class="half">
+    <img src="resource/info/Loss.png" width="300"/>
+    <img src="resource/info/Accuracy.png"width="300">
+</center>
 
 - Confusion matrix
 <figure class="half">
     <img src="resource/info/ConfMatrix_train.png">
     <img src="resource/info/ConfMatrix_test.png">
 </figure>
+
 
 ## Reference
 [1] Chao Li, Qiaoyong Zhong, Di Xie, Shiliang Pu. Co-occurrence Feature Learning from Skeleton Data for Action Recognition and Detection with Hierarchical Aggregation. IJCAI 2018.
