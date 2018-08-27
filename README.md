@@ -28,11 +28,11 @@ Our code is based on **Python3.5**. There are a few dependencies to run the code
 ## Usage
 #### Data preparation
 ##### NTU RGB+D
-To transform raw NTU RGB+D data into numpy array of memmap format by these commands:
+To transform raw NTU RGB+D data into numpy array (memmap format ) by this command:
 ```commandline
 python ./feeder/ntu_gendata.py --data_path <path for raw skeleton dataset> --out_folder <path for new dataset>
 ```
-##### Other datasets
+##### Other Datasets
 Not supported now.
 #### Training
 To train the model, you should note that:
@@ -42,8 +42,8 @@ To train the model, you should note that:
 python main.py --dataset_dir <parents path for all the datasets> --mode train --model_name HCN --dataset_name NTU-RGB-D-CV --num 01
 ```
 To run a new trial with different parameters, you need to: 
-- Firstly, run the above training command with a new trail number, e.g, ```--num 03```, thus you will got an error.
-- Secondly, copy a  parameters file from the ```./HCN/experiments/NTU-RGB-D-CV/HCN01/params.json``` to the path of your new trail ```"./HCN/experiments/NTU-RGB-D-CV/HCN01/params.json"``` and modify it as you want.
+- Firstly, run the above training command with a new trial number, e.g, ```--num 03```, thus you will got an error.
+- Secondly, copy a  parameters file from the ```./HCN/experiments/NTU-RGB-D-CV/HCN01/params.json``` to the path of your new trial ```"./HCN/experiments/NTU-RGB-D-CV/HCN01/params.json"``` and modify it as you want.
 - At last, run the above training command again, it will works.
 
 #### Testing
@@ -52,7 +52,7 @@ python main.py --dataset_dir <parents path for all the datasets> --mode test --l
 ```
 
 #### Load and Training 
-You also can load a half trained model, and train it from a specific checkpoints by the following command
+You also can load a half trained model, and start training it from a specific checkpoint by the following command:
 ```commandline
 python main.py --dataset_dir <parents path for all the datasets> --mode load_train --load True --model_name HCN --dataset_name NTU-RGB-D-CV --num 01 --load_model <path for  trained model>
 ```
@@ -61,10 +61,11 @@ python main.py --dataset_dir <parents path for all the datasets> --mode load_tra
 #### Table
 The expected **Top-1** **accuracy** of the model for NTU-RGD+D are shown here:
 
-| Model | Resized <br> Skeleton <br> Length | FC <br> Neuron <br> Numbers | NTU RGB+D <br> Cross View (%) |NTU RGB+D <br> Cross Subject (%) |
+| Model | Normalized <br> Sequence <br> Length | FC <br> Neuron <br> Numbers | NTU RGB+D <br> Cross View (%) |NTU RGB+D <br> Cross Subject (%) |
 | :------: | :------: | :------:| :------:| :------: |
-| HCN[1]| 32 | 256| x    | x     |
-| HCN | 64 | 512 | x    | x     |
+| HCN[1]| 32 | 256 | **86.5** | **91.1** |
+| HCN | 32 | 256 | 84.2 | 89.2 |
+| HCN | 64 | 512 | 84.8* | 90.9* |
  
 [1] http://arxiv.org/pdf/1804.06055.pdf
 
@@ -72,7 +73,7 @@ The expected **Top-1** **accuracy** of the model for NTU-RGD+D are shown here:
 - Loss & accuracy 
 <figure class="half">
     <img src="resource/info/Loss.png">
-    <img src="resource/info/accuracy.png">
+    <img src="resource/info/Accuracy.png">
 </figure>
 
 - Confusion matrix
@@ -88,3 +89,4 @@ The expected **Top-1** **accuracy** of the model for NTU-RGD+D are shown here:
 
 ## Contact
 For any question, feel free to contact ``` huguyuehuhu@gmail.com ```.
+A pytorch completion of { Co-occurrence Feature Learning from Skeleton Data for Action Recognition and Detection with Hierarchical Aggregation }
