@@ -1,4 +1,4 @@
-# A PyTorch Completion of HCN
+# A PyTorch Reimplementation of HCN
 **Co-occurrence Feature Learning from Skeleton Data for Action Recognition and Detection with Hierarchical Aggregation**.
 Chao Li, Qiaoyong Zhong, Di Xie, Shiliang Pu, IJCAI 2018.
 
