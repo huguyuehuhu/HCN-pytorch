@@ -463,7 +463,7 @@ if __name__ == '__main__':
 
     logger = logging.getLogger()
 
-    port,env = 8888,params.model_version+'release'
+    port,env = 8097,params.model_version
     columnnames,rownames = list(range(1,params.model_args["num_class"]+1)),list(range(1,params.model_args["num_class"]+1))
     loss_logger = VisdomPlotLogger('line',port=port,opts={'title': params.experiment_path + '_Loss','legend':['train','test']}, win=None,env=env)
     loss_logger_split = VisdomPlotLogger('line', port=port,
