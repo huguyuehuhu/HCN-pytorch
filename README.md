@@ -92,4 +92,3 @@ The expected **Top-1** **accuracy** of the model for NTU-RGD+D are shown here:
 
 ## Contact
 For any question, feel free to contact ``` huguyuehuhu@gmail.com ```.
-A pytorch completion of { Co-occurrence Feature Learning from Skeleton Data for Action Recognition and Detection with Hierarchical Aggregation }
