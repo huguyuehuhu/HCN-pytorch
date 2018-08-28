@@ -43,7 +43,7 @@ python main.py --dataset_dir <parents path for all the datasets> --mode train --
 ```
 To run a new trial with different parameters, you need to: 
 - Firstly, run the above training command with a new trial number, e.g, ```--num 03```, thus you will got an error.
-- Secondly, copy a  parameters file from the ```./HCN/experiments/NTU-RGB-D-CV/HCN01/params.json``` to the path of your new trial ```"./HCN/experiments/NTU-RGB-D-CV/HCN01/params.json"``` and modify it as you want.
+- Secondly, copy a  parameters file from the ```./HCN/experiments/NTU-RGB-D-CV/HCN01/params.json``` to the path of your new trial ```"./HCN/experiments/NTU-RGB-D-CV/HCN03/params.json"``` and modify it as you want.
 - At last, run the above training command again, it will works.
 
 #### Testing
