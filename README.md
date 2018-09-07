@@ -61,7 +61,7 @@ python main.py --dataset_dir <parents path for all the datasets> --mode load_tra
 #### Table
 The expected **Top-1** **accuracy** of the model for NTU-RGD+D are shown here:
 
-| Model | Normalized <br> Sequence <br> Length | FC <br> Neuron <br> Numbers | NTU RGB+D <br> Cross View (%) |NTU RGB+D <br> Cross Subject (%) |
+| Model | Normalized <br> Sequence <br> Length | FC <br> Neuron <br> Numbers | NTU RGB+D <br>  Cross Subject (%) |NTU RGB+D <br> Cross View (%) |
 | :------: | :------: | :------:| :------:| :------: |
 | HCN[1]| 32 | 256 | **86.5** | **91.1** |
 | HCN | 32 | 256 | 84.2 | 89.2 |
