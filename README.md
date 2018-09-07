@@ -88,7 +88,7 @@ The expected **Top-1** **accuracy** of the model for NTU-RGD+D are shown here:
 ## Reference
 [1] Chao Li, Qiaoyong Zhong, Di Xie, Shiliang Pu. Co-occurrence Feature Learning from Skeleton Data for Action Recognition and Detection with Hierarchical Aggregation. IJCAI 2018.
 
-[2] [yysijie/st-gcn](https://github.com/yysijie/st-gcn): referred for some code for dataset processing.
+[2] [yysijie/st-gcn](https://github.com/yysijie/st-gcn): referred for some code of dataset processing.
 
 ## Contact
 For any question, feel free to contact ``` huguyuehuhu@gmail.com ```.
