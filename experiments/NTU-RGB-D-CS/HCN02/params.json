@@ -13,7 +13,7 @@
     "scheduler_gamma2":0.99,
     "scheduler_gamma3":0.5,
     "patience":20,
-    "batch_size": 64,
+    "batch_size": 32,
     "num_epochs": 400,
     "start_epoch":0,
     "save_best_ever_n_epoch":50,
