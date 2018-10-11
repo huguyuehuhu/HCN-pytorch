@@ -65,7 +65,7 @@ The expected **Top-1** **accuracy** of the model for NTU-RGD+D are shown here:
 | :------: | :------: | :------:| :------:| :------: |
 | HCN[1]| 32 | 256 | **86.5** | **91.1** |
 | HCN | 32 | 256 | 84.2 | 89.2 |
-| HCN | 64 | 512 | 84.5* | 90.9* |
+| HCN | 64 | 512 | 84.9* | 90.9* |
  
 [1] http://arxiv.org/pdf/1804.06055.pdf
 
