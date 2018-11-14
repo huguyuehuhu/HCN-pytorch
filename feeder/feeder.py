@@ -7,10 +7,11 @@ from torch.autograd import Variable
 from torchvision import transforms
 import numpy as np
 
-from utils import utils
-from feeder import tools
-
-# import tools, utils
+try:
+    from utils import utils
+    from feeder import tools
+except:
+    import tools, utils
 
 class Feeder(torch.utils.data.Dataset):
     """ Feeder for skeleton-based action recognition
