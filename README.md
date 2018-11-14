@@ -20,7 +20,7 @@ Chao Li, Qiaoyong Zhong, Di Xie, Shiliang Pu, IJCAI 2018.
 ## Prerequisites
 Our code is based on **Python3.5**. There are a few dependencies to run the code in the following:
 - Python (>=3.5)
-- [PyTorch](http://pytorch.org/) (Release version 0.4.0)
+- PyTorch (>=0.4.0) - follow guidance on [PyTorch](http://pytorch.org/)
 - [torchnet](https://github.com/pytorch/tnt)
 - Visdom
 - Other Python libraries can be installed by `pip install -r requirements.txt`
@@ -35,6 +35,12 @@ python ./feeder/ntu_gendata.py --data_path <path for raw skeleton dataset> --out
 ##### Other Datasets
 Not supported now.
 #### Training
+Before you start the training, you have to launch a [visdom](https://github.com/facebookresearch/visdom) server.
+```commandline
+python -m visdom
+```
+
+
 To train the model, you should note that:
  - ```--dataset_dir``` is the **parents path** for **all** the datasets, 
  - ``` --num ``` the number of experiments trials (type: list).
