@@ -23,7 +23,7 @@ Our code is based on **Python3.5**. There are a few dependencies to run the code
 - PyTorch (>=0.4.0)
 - [torchnet](https://github.com/pytorch/tnt)
 - Visdom
-- Other version info about some Python libraries can be found in `requirements.txt`
+- Other version info about some Python packages can be found in `requirements.txt`
 
 ## Usage
 #### Data preparation
