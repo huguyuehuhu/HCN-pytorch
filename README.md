@@ -20,7 +20,7 @@ Chao Li, Qiaoyong Zhong, Di Xie, Shiliang Pu, IJCAI 2018.
 ## Prerequisites
 Our code is based on **Python3.5**. There are a few dependencies to run the code in the following:
 - Python (>=3.5)
-- PyTorch (>=0.4.0)
+- PyTorch (0.4.0)
 - [torchnet](https://github.com/pytorch/tnt)
 - Visdom
 - Other version info about some Python packages can be found in `requirements.txt`
