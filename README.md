@@ -100,5 +100,3 @@ The expected **Top-1** **accuracy** of the model for NTU-RGD+D are shown here:
 
 [2] [yysijie/st-gcn](https://github.com/yysijie/st-gcn): referred for some code of dataset processing.
 
-## Contact
-For any question, feel free to contact ``` huguyuehuhu@gmail.com ```.
