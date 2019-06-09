@@ -73,7 +73,7 @@ def train(model, optimizer, loss_fn, dataloader, metrics, params,logger):
             # move to GPU if available
             if params.cuda:
                 if params.data_parallel:
-                    data_batch, labels_batch = data_batch.cuda(async=True), labels_batch.cuda(async=True)
+                    data_batch, labels_batch = data_batch.cuda(non_blocking=True), labels_batch.cuda(non_blocking=True)
                 else:
                     data_batch, labels_batch = data_batch.cuda(params.gpu_id), labels_batch.cuda(params.gpu_id)
 
