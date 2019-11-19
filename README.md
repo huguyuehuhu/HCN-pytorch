@@ -1,4 +1,4 @@
-# A PyTorch *Reproduction* of HCN
+# A PyTorch Reproduction of HCN
 **Co-occurrence Feature Learning from Skeleton Data for Action Recognition and Detection with Hierarchical Aggregation**.
 Chao Li, Qiaoyong Zhong, Di Xie, Shiliang Pu, IJCAI 2018.
 
