@@ -32,8 +32,15 @@ To transform raw NTU RGB+D data into numpy array (memmap format ) by this comman
 ```commandline
 python ./feeder/ntu_gendata.py --data_path <path for raw skeleton dataset> --out_folder <path for new dataset>
 ```
-##### Other Datasets
-Not supported now.
+##### SBU Kinect Interaction Dataset
+To download the dataset:
+```commandline
+bash scripts/get_SBU-Kinect-Interaction.sh	
+```
+To transform raw data into numpy array (memmap format ) by this command:
+```commandline
+python ./feeder/SBU_gendata.py --data_path <path for raw skeleton dataset> --out_folder <path for new dataset>
+```
 #### Training
 Before you start the training, you have to launch [visdom](https://github.com/facebookresearch/visdom) server.
 ```commandline
@@ -62,6 +69,17 @@ You also can load a half trained model, and start training it from a specific ch
 ```commandline
 python main.py --dataset_dir <parents path for all the datasets> --mode load_train --load True --model_name HCN --dataset_name NTU-RGB-D-CV --num 01 --load_model <path for  trained model>
 ```
+
+#### train and evaluate on SBU Kinect Interaction Dataset
+```commandline
+bash scripts/train_evaluate_SBU.sh
+```
+
+### Quick visualisation for SBU Kinect Interaction Dataset
+```commandline
+python test_data_loader.py   --dataset_dir ./data0/SBU-RGB-D/FOLD_5/  --model_name HCN --dataset_name SBU-RGB-D --num 05
+```
+
 
 ## Results
 #### Table

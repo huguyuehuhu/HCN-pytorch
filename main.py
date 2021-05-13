@@ -44,6 +44,7 @@ parser.add_argument('--load',
         help='load a trained model or not ')
 parser.add_argument('--mode', default='train', help='train,test,or load_train')
 parser.add_argument('--num', default='01', help='num of trials (type: list)')
+            # compute model output and loss
 
 
 def train(model, optimizer, loss_fn, dataloader, metrics, params,logger):
@@ -310,6 +311,7 @@ def train_and_evaluate(model, train_dataloader, val_dataloader, optimizer,
         params.current_epoch = epoch
         if params.lr_decay_type != 'plateau':
             scheduler.step()
+        lr_logger.log(epoch, scheduler.get_last_lr()[0])
 
         # Run one epoch
         logger.info("Epoch {}/{}".format(epoch + 1, params.num_epochs))
@@ -322,8 +324,11 @@ def train_and_evaluate(model, train_dataloader, val_dataloader, optimizer,
 
 
         # vis logger
-        accs = [100. * (1 - train_metrics['accuracytop1']),100. * (1 - train_metrics['accuracytop5']),
-               100. * (1 - val_metrics['accuracytop1']),100. * (1 - val_metrics['accuracytop5']),]
+        #accs = [100. * (1 - train_metrics['accuracytop1']),100. * (1 - train_metrics['accuracytop5']),
+        #       100. * (1 - val_metrics['accuracytop1']),100. * (1 - val_metrics['accuracytop5']),]
+        accs = [100. * (train_metrics['accuracytop1']),100. * ( train_metrics['accuracytop5']),
+               100. * ( val_metrics['accuracytop1']),100. * (val_metrics['accuracytop5']),]
+        
         error_logger15.log([epoch]*4,accs )
 
 
@@ -470,8 +475,10 @@ if __name__ == '__main__':
                                    opts={'title': params.experiment_path + '_Loss_split'},
                                    win=None, env=env)
     # error_logger = VisdomPlotLogger('line',port=port, opts={'title': params.experiment_path + '_Error @top1','legend':['train','test']},win=None,env=env)
-    error_logger15 = VisdomPlotLogger('line', port=port, opts={'title': params.experiment_path + '_Error @top1@top5',
-           'legend': ['train@top1','train@top5','test@top1','test@top5']}, win=None, env=env)
+    error_logger15 = VisdomPlotLogger('line', port=port, opts={'title': params.experiment_path + '_Error @top1@top5','legend': ['train@top1','train@top5','test@top1','test@top5']}, win=None, env=env)
+
+    lr_logger = VisdomPlotLogger('line', port=port, opts={'title': params.experiment_path + 'lr',
+           'legend': ['lr']}, win=None, env=env)
     train_confusion_logger = VisdomLogger('heatmap', port=port, opts={'title': params.experiment_path + 'train_Confusion matrix',
         'columnnames': columnnames,'rownames': rownames},win=None,env=env)
     test_confusion_logger = VisdomLogger('heatmap', port=port, opts={'title': params.experiment_path + 'test_Confusion matrix',
@@ -490,19 +497,29 @@ if __name__ == '__main__':
 
     if 'HCN' in params.model_version:
         model = HCN.HCN(**params.model_args)
-        if params.data_parallel:
-            model = torch.nn.DataParallel(model).cuda()
-        else:
-            model = model.cuda(params.gpu_id)
+        if(params.cuda):
+            if params.data_parallel:
+                model = torch.nn.DataParallel(model).cuda()
+            else:
+                model = model.cuda(params.gpu_id)
 
         loss_fn = HCN.loss_fn
         metrics = HCN.metrics
+    
+    opts=[{'params': model.fc7.parameters(),'weight_decay':params.weight_decay},{'params': model.conv1.parameters()},
+               {'params': model.conv1m.parameters()},
+               {'params': model.conv2.parameters()},
+               {'params': model.conv2m.parameters()},
+               {'params': model.conv3.parameters()},
+               {'params': model.conv3m.parameters()},
+               {'params': model.conv5.parameters()},
+               {'params': model.conv6.parameters()},
+               {'params': model.fc8.parameters()}]
+
     # elif # add other model
-
     if params.optimizer == 'Adam':
-        optimizer = optim.Adam(filter(lambda p: p.requires_grad, model.parameters()), lr=params.lr, betas=(0.9, 0.999), eps=1e-8,
-                 weight_decay=params.weight_decay)
-
+        #optimizer = optim.Adam(filter(lambda p: p.requires_grad, model.parameters()), lr=params.lr, betas=(0.9, 0.999), eps=1e-8,weight_decay=params.weight_decay)
+        optimizer = optim.Adam(opts, lr=params.lr, betas=(0.9, 0.999), eps=1e-8)
     elif params.optimizer == 'SGD':
         optimizer = optim.SGD(filter(lambda p: p.requires_grad, model.parameters()), lr=params.lr, momentum=0.9,nesterov=True,weight_decay=params.weight_decay)
 
