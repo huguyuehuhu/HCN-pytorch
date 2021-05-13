@@ -29,8 +29,10 @@ class HCN(nn.Module):
                  num_joint=25,
                  num_person=2,
                  out_channel=64,
-                 window_size=64,
+                 window_size=32,
                  num_class = 60,
+                 fc7_channel=256,
+                 bypass_conv4=True,
                  ):
         super(HCN, self).__init__()
         self.num_person = num_person
@@ -45,11 +47,14 @@ class HCN(nn.Module):
         self.conv3 = nn.Sequential(
             nn.Conv2d(in_channels=num_joint, out_channels=out_channel//2, kernel_size=3, stride=1, padding=1),
             nn.MaxPool2d(2))
-        self.conv4 = nn.Sequential(
-            nn.Conv2d(in_channels=out_channel//2, out_channels=out_channel, kernel_size=3, stride=1, padding=1),
-            nn.Dropout2d(p=0.5),
-            nn.MaxPool2d(2))
-        # motion
+        if(not bypass_conv4):
+            self.conv4 = nn.Sequential(
+                nn.Conv2d(in_channels=out_channel//2, out_channels=out_channel, kernel_size=3, stride=1, padding=1),
+                nn.Dropout2d(p=0.5),
+                nn.MaxPool2d(2))
+        else:
+            self.conv4=None
+            # motion
         self.conv1m = nn.Sequential(
             nn.Conv2d(in_channels=in_channel,out_channels=out_channel,kernel_size=1,stride=1,padding=0),
             nn.ReLU(),
@@ -59,30 +64,33 @@ class HCN(nn.Module):
         self.conv3m = nn.Sequential(
             nn.Conv2d(in_channels=num_joint, out_channels=out_channel//2, kernel_size=3, stride=1, padding=1),
             nn.MaxPool2d(2))
-        self.conv4m = nn.Sequential(
-            nn.Conv2d(in_channels=out_channel//2, out_channels=out_channel, kernel_size=3, stride=1, padding=1),
-            nn.Dropout2d(p=0.5),
-            nn.MaxPool2d(2))
-
+        if(not bypass_conv4):
+            self.conv4m = nn.Sequential(
+                nn.Conv2d(in_channels=out_channel//2, out_channels=out_channel, kernel_size=3, stride=1, padding=1),
+                nn.Dropout2d(p=0.5),
+                nn.MaxPool2d(2))
+        else:
+            self.conv4m=None
         # concatenate motion & position
         self.conv5 = nn.Sequential(
-            nn.Conv2d(in_channels=out_channel*2, out_channels=out_channel*2, kernel_size=3, stride=1, padding=1),
+            nn.Conv2d(in_channels=out_channel*2 if not bypass_conv4 else out_channel, out_channels=out_channel*2 if not bypass_conv4 else out_channel, kernel_size=3, stride=1, padding=1),
             nn.ReLU(),
             nn.Dropout2d(p=0.5),
             nn.MaxPool2d(2)
         )
         self.conv6 = nn.Sequential(
-            nn.Conv2d(in_channels=out_channel*2, out_channels=out_channel*4, kernel_size=3, stride=1, padding=1),
+            nn.Conv2d(in_channels=out_channel*2 if not bypass_conv4 else out_channel, out_channels=out_channel*4 if not bypass_conv4 else out_channel*2, kernel_size=3, stride=1, padding=1),
             nn.ReLU(),
             nn.Dropout2d(p=0.5),
             nn.MaxPool2d(2)
         )
 
         self.fc7= nn.Sequential(
-            nn.Linear((out_channel * 4)*(window_size//16)*(window_size//16),256*2), # 4*4 for window=64; 8*8 for window=128
+            nn.Linear((out_channel * 4)*(window_size//16)*(window_size//16) if not bypass_conv4 else (out_channel * 2)*(window_size//8)*(window_size//8),fc7_channel), # 4*4 for window=64; 8*8 for window=128
+            
             nn.ReLU(),
             nn.Dropout2d(p=0.5))
-        self.fc8 = nn.Linear(256*2,num_class)
+        self.fc8 = nn.Linear(fc7_channel,num_class)
 
         # initial weight
         utils.initial_model_weight(layers = list(self.children()))
@@ -105,8 +113,10 @@ class HCN(nn.Module):
             # N0,V1,T2,C3, global level
             out = out.permute(0,3,2,1).contiguous()
             out = self.conv3(out)
-            out_p = self.conv4(out)
-
+            if(self.conv4):
+                out_p = self.conv4(out)
+            else:
+                out_p=out
 
             # motion
             # N0,T1,V2,C3 point-level
@@ -115,8 +125,10 @@ class HCN(nn.Module):
             # N0,V1,T2,C3, global level
             out = out.permute(0, 3, 2, 1).contiguous()
             out = self.conv3m(out)
-            out_m = self.conv4m(out)
-
+            if(self.conv4m):
+                out_m = self.conv4m(out)
+            else:
+                out_m=out
             # concat
             out = torch.cat((out_p,out_m),dim=1)
             out = self.conv5(out)
@@ -127,6 +139,7 @@ class HCN(nn.Module):
         # max out logits
         out = torch.max(logits[0],logits[1])
         out = out.view(out.size(0), -1)
+        
         out = self.fc7(out)
         out = self.fc8(out)
 
@@ -167,7 +180,7 @@ def accuracytop1(output, target, topk=(1,)):
 
     res = []
     for k in topk:
-        correct_k = correct[:k].view(-1).float().sum(0, keepdim=True)
+        correct_k = correct[:k].contiguous().view(-1).float().sum(0, keepdim=True)
         res.append(correct_k.mul_(1.0 / batch_size))
     return res
 
@@ -212,7 +225,7 @@ def accuracytop5(output, target, topk=(5,)):
 
     res = []
     for k in topk:
-        correct_k = correct[:k].view(-1).float().sum(0, keepdim=True)
+        correct_k = correct[:k].contiguous().view(-1).float().sum(0, keepdim=True)
         res.append(correct_k.mul_(1.0 / batch_size))
     return res
 

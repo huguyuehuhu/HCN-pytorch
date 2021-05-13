@@ -30,6 +30,14 @@ def fetch_dataloader(types, params):
             params.test_feeder_args["num_frame_path"] = params.dataset_dir + 'NTU-RGB-D' + '/xsub/val_num_frame.npy'
             params.test_feeder_args["label_path"] = params.dataset_dir + 'NTU-RGB-D' + '/xsub/val_label.pkl'
 
+    if ("SBU-RGB-D" in params.dataset_name):
+            params.train_feeder_args["data_path"] = params.dataset_dir + 'train_data.npy'
+            params.train_feeder_args["num_frame_path"] = params.dataset_dir + 'train_num_frame.npy'
+            params.train_feeder_args["label_path"] = params.dataset_dir + 'train_label.pkl'
+            params.test_feeder_args["data_path"]= params.dataset_dir + 'val_data.npy'
+            params.test_feeder_args["num_frame_path"] = params.dataset_dir + 'val_num_frame.npy'
+            params.test_feeder_args["label_path"] = params.dataset_dir + 'val_label.pkl'
+
 
 
     if types == 'train':

@@ -6,6 +6,7 @@ import torch
 from torch.autograd import Variable
 from torchvision import transforms
 import numpy as np
+import random
 
 try:
     from utils import utils
@@ -57,8 +58,9 @@ class Feeder(torch.utils.data.Dataset):
         self.crop_resize = crop_resize
         self.rand_rotate = rand_rotate
         self.mmap = mmap
-
         self.load_data()
+        
+        self.indices=list(range(len(self.data))) 
         self.coordinate_transfer()
         if normalization:
             self.get_mean_map()
@@ -111,6 +113,8 @@ class Feeder(torch.utils.data.Dataset):
             #  take joints 2  of first person, as origins of each person
             origin = data_numpy[:, :, :, 1, 0]
             data_numpy = data_numpy - origin[:, :, :, None, None]
+            
+
         elif self.origin_transfer == 1:
             #  take joints 2  of second person, as origins of each person
             origin = data_numpy[:, :, :, 1, 1]
@@ -134,7 +138,6 @@ class Feeder(torch.utils.data.Dataset):
         self.min_map = (data.transpose(0, 2, 3, 4, 1).reshape(N * T * V * M, C)).min(axis=0)
         self.max_map = (data.transpose(0, 2, 3, 4, 1).reshape(N * T * V * M, C)).max(axis=0)
         self.mean_mean = (data.transpose(0, 2, 3, 4, 1).reshape(N * T * V * M, C)).mean(axis=0)
-
         print('min_map', self.min_map, 'max_map', self.max_map, 'mean', self.mean_mean)
 
     def __len__(self):
@@ -146,6 +149,11 @@ class Feeder(torch.utils.data.Dataset):
     def __getitem__(self, index):
         # get data
         # input: C, T, V, M
+        """if(index==0):
+            random.shuffle(self.indices)
+        
+        index=self.indices[index]
+        """
         data_numpy = self.data[index]
         # if self.mmap = True, the loaded data_numpy is read-only, and torch.utils.data.DataLoader could load type 'numpy.core.memmap.memmap'
         if self.mmap:
@@ -167,14 +175,20 @@ class Feeder(torch.utils.data.Dataset):
                 min_map, max_map = np.array([-2.965678, -1.8587272, -4.574943]), np.array(
                     [2.908885, 2.0095677, 4.843938])
             else:
-                min_map, max_map = np.array([-3.602826, -2.716611, 0.]), np.array([3.635367, 1.888282, 5.209939])
-
-            data_numpy = np.floor(255 * (data_numpy - min_map[:, None, None, None]) / \
-                                  (max_map[:, None, None, None] - min_map[:, None, None, None])) / 255
-
+                pass
+            
+            C, T, V, M = data_numpy.shape
+            max_map=data_numpy[0:valid_frame_num,:,:,:].transpose(1, 2, 3, 0).reshape( T * V * M, C).max(axis=0)
+            min_map=data_numpy[0:valid_frame_num,:,:,:].transpose(1, 2, 3, 0).reshape( T * V * M, C).min(axis=0)
+        
+            #data_numpy = (255.0*(data_numpy - min_map[:, None, None, None])) / (255.0*(max_map[:, None, None, None] - min_map[:, None, None, None]))
+            data_numpy = (data_numpy - min_map[:, None, None, None]) / (max_map[:, None, None, None] - min_map[:, None, None, None])
+            
         # processing
+        
         if self.crop_resize:
             data_numpy = tools.valid_crop_resize(data_numpy, valid_frame_num, self.p_interval, self.window_size)
+            
 
         if self.rand_rotate > 0:
             data_numpy = tools.rand_rotate(data_numpy, self.rand_rotate)
@@ -194,7 +208,7 @@ class Feeder(torch.utils.data.Dataset):
 
         if self.random_move:
             data_numpy = tools.random_move(data_numpy)
-
+        
         return data_numpy, label
 
     def top_k(self, score, top_k):

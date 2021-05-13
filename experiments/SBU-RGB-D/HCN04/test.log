@@ -1,0 +1,81 @@
+2021-04-12 18:20:46,563:INFO: dataset_dir: ./data0/SBU-RGB-D/FOLD_4/
+2021-04-12 18:20:46,563:INFO: dataset_name: SBU-RGB-D
+2021-04-12 18:20:46,564:INFO: model_dir: ./
+2021-04-12 18:20:46,564:INFO: model_name: HCN
+2021-04-12 18:20:46,564:INFO: load_model: None
+2021-04-12 18:20:46,564:INFO: load: True
+2021-04-12 18:20:46,564:INFO: mode: test
+2021-04-12 18:20:46,564:INFO: num: 04
+2021-04-12 18:20:46,564:INFO: model_version: HCN
+2021-04-12 18:20:46,564:INFO: experiment_path: ./experiments/SBU-RGB-D/HCN04
+2021-04-12 18:20:46,564:INFO: restore_file: ./experiments/SBU-RGB-D/HCN04/checkpoint/best.pth.tar
+2021-04-12 18:20:46,564:INFO: gpu_id: -5
+2021-04-12 18:20:46,564:INFO: cuda: False
+2021-04-12 18:20:46,564:INFO: data_parallel: False
+2021-04-12 18:20:46,564:INFO: seed: 0
+2021-04-12 18:20:46,564:INFO: lr: 0.001
+2021-04-12 18:20:46,564:INFO: lr_decay_type: exp
+2021-04-12 18:20:46,564:INFO: lr_step: [100, 160, 200]
+2021-04-12 18:20:46,564:INFO: scheduler_gamma: 0.1
+2021-04-12 18:20:46,564:INFO: scheduler_gamma2: 0.999
+2021-04-12 18:20:46,564:INFO: scheduler_gamma3: 0.5
+2021-04-12 18:20:46,564:INFO: patience: 20
+2021-04-12 18:20:46,564:INFO: batch_size: 64
+2021-04-12 18:20:46,564:INFO: num_epochs: 400
+2021-04-12 18:20:46,564:INFO: start_epoch: 0
+2021-04-12 18:20:46,564:INFO: save_best_ever_n_epoch: 50
+2021-04-12 18:20:46,564:INFO: save_summary_steps: 1
+2021-04-12 18:20:46,564:INFO: num_workers: 4
+2021-04-12 18:20:46,564:INFO: optimizer: Adam
+2021-04-12 18:20:46,564:INFO: weight_decay: 0.0001
+2021-04-12 18:20:46,564:INFO: clip: 0.5
+2021-04-12 18:20:46,564:INFO: train_feeder_args: {'data_path': None, 'label_path': None, 'random_valid_choose': True, 'random_shift': False, 'random_move': False, 'window_size': 16, 'normalization': True, 'debug': False, 'origin_transfer': -5, 'crop_resize': True, 'p_interval': [0.5, 1]}
+2021-04-12 18:20:46,564:INFO: test_feeder_args: {'data_path': None, 'label_path': None, 'random_valid_choose': False, 'random_shift': False, 'random_move': False, 'window_size': 16, 'normalization': True, 'debug': False, 'origin_transfer': -5, 'crop_resize': True, 'p_interval': [0.95]}
+2021-04-12 18:20:46,564:INFO: model_args: {'in_channel': 3, 'out_channel': 32, 'window_size': 16, 'num_joint': 15, 'num_person': 2, 'num_class': 8, 'fc7_channel': 64, 'bypass_conv4': True}
+2021-04-12 18:20:46,564:INFO: loss_args: {'type': 'CE'}
+2021-04-12 18:20:46,564:INFO: dataset_dir: ./data0/SBU-RGB-D/FOLD_4/
+2021-04-12 18:20:46,564:INFO: dataset_name: SBU-RGB-D
+2021-04-12 18:20:46,565:INFO: mode: test
+2021-04-12 18:20:46,568:INFO: HCN(
+  (conv1): Sequential(
+    (0): Conv2d(3, 32, kernel_size=(1, 1), stride=(1, 1))
+    (1): ReLU()
+  )
+  (conv2): Conv2d(32, 16, kernel_size=(3, 1), stride=(1, 1), padding=(1, 0))
+  (conv3): Sequential(
+    (0): Conv2d(15, 16, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (1): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+  )
+  (conv1m): Sequential(
+    (0): Conv2d(3, 32, kernel_size=(1, 1), stride=(1, 1))
+    (1): ReLU()
+  )
+  (conv2m): Conv2d(32, 16, kernel_size=(3, 1), stride=(1, 1), padding=(1, 0))
+  (conv3m): Sequential(
+    (0): Conv2d(15, 16, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (1): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+  )
+  (conv5): Sequential(
+    (0): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (1): ReLU()
+    (2): Dropout2d(p=0.5, inplace=False)
+    (3): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+  )
+  (conv6): Sequential(
+    (0): Conv2d(32, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (1): ReLU()
+    (2): Dropout2d(p=0.5, inplace=False)
+    (3): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+  )
+  (fc7): Sequential(
+    (0): Linear(in_features=256, out_features=64, bias=True)
+    (1): ReLU()
+    (2): Dropout2d(p=0.5, inplace=False)
+  )
+  (fc8): Linear(in_features=64, out_features=8, bias=True)
+)
+2021-04-12 18:20:46,568:INFO: Loading the datasets...
+2021-04-12 18:20:46,608:INFO: - done.
+2021-04-12 18:20:46,608:INFO: Restoring parameters from ./experiments/SBU-RGB-D/HCN04/checkpoint/best.pth.tar
+2021-04-12 18:20:46,761:INFO: - Eval metrics : accuracytop1: 1.000 ; accuracytop5: 1.000 ; loss: 0.003 ; ls_all: 0.003 ; ls_CE: 0.003
+2021-04-12 18:20:46,859:INFO: - Eval metrics : accuracytop1: 0.981 ; accuracytop5: 1.000 ; loss: 0.055 ; ls_all: 0.055 ; ls_CE: 0.055
